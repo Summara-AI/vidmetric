@@ -38,6 +38,14 @@ export default function FilterBar({ videos, onFilteredVideos }: FilterBarProps) 
   const [dateFilter, setDateFilter] = useState<DateFilter>('allTime')
   const [searchQuery, setSearchQuery] = useState('')
 
+  // Reset date filter and search query when videos change (new channel analyzed)
+  useEffect(() => {
+    if (dateFilter !== 'allTime') {
+      setDateFilter('allTime')
+    }
+    setSearchQuery('')
+  }, [videos])
+
   const filterAndSortVideos = useMemo(() => {
     let filtered = [...videos]
 
