@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo, useRef } from 'react'
 import { VideoMetrics } from '@/types/youtube'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
-import { Search, Filter } from 'lucide-react'
+import { Search, Filter, RotateCcw } from 'lucide-react'
 import { daysAgo } from '@/lib/utils'
 
 interface FilterBarProps {
@@ -38,6 +38,7 @@ export default function FilterBar({ videos, onFilteredVideos }: FilterBarProps) 
   const [dateFilter, setDateFilter] = useState<DateFilter>('allTime')
   const [searchTerm, setSearchTerm] = useState('')
   const [showSuggestions, setShowSuggestions] = useState(false)
+  const [selectedSuggestion, setSelectedSuggestion] = useState<string | null>(null)
   const searchInputRef = useRef<HTMLInputElement>(null)
   const suggestionsRef = useRef<HTMLDivElement>(null)
 
@@ -47,13 +48,14 @@ export default function FilterBar({ videos, onFilteredVideos }: FilterBarProps) 
       setDateFilter('allTime')
     }
     setSearchTerm('')
+    setSelectedSuggestion(null)
   }, [videos])
 
   const filterAndSortVideos = useMemo(() => {
     let filtered = [...videos]
 
-    // Apply date filter
-    if (dateFilter !== 'allTime') {
+    // Apply date filter (override if suggestion is selected)
+    if (dateFilter !== 'allTime' && !selectedSuggestion) {
       const now = new Date()
       const cutoffDate = new Date()
 
@@ -106,21 +108,22 @@ export default function FilterBar({ videos, onFilteredVideos }: FilterBarProps) 
     })
 
     return filtered
-  }, [videos, sortBy, dateFilter, searchTerm])
+  }, [videos, sortBy, dateFilter, searchTerm, selectedSuggestion])
 
   // Generate suggestions for autocomplete
   const suggestions = useMemo(() => {
-    if (searchTerm.length < 2) return []
+    if (searchTerm.length < 1) return []
     
     return videos
       .filter(video => 
         video.title.toLowerCase().includes(searchTerm.toLowerCase())
       )
-      .slice(0, 6)
+      .slice(0, 8)
       .map(video => ({
         title: video.title,
         thumbnail: video.thumbnail,
-        id: video.id
+        id: video.id,
+        publishedYear: new Date(video.publishedAt).getFullYear()
       }))
   }, [videos, searchTerm])
 
@@ -143,12 +146,17 @@ export default function FilterBar({ videos, onFilteredVideos }: FilterBarProps) 
 
   // Show/hide suggestions based on search term
   useEffect(() => {
-    setShowSuggestions(searchTerm.length >= 2)
-  }, [searchTerm])
+    setShowSuggestions(searchTerm.length >= 1)
+    // Clear selected suggestion if user types manually
+    if (selectedSuggestion && searchTerm !== selectedSuggestion) {
+      setSelectedSuggestion(null)
+    }
+  }, [searchTerm, selectedSuggestion])
 
   // Handle suggestion click
   const handleSuggestionClick = (title: string) => {
     setSearchTerm(title)
+    setSelectedSuggestion(title)
     setShowSuggestions(false)
   }
 
@@ -161,25 +169,46 @@ export default function FilterBar({ videos, onFilteredVideos }: FilterBarProps) 
     )
   }
 
+  // Check if any filters are active (not default values)
+  const hasActiveFilters = useMemo(() => {
+    return sortBy !== 'trendingScore' || 
+           dateFilter !== 'allTime' || 
+           searchTerm.trim() !== '' ||
+           selectedSuggestion !== null
+  }, [sortBy, dateFilter, searchTerm, selectedSuggestion])
+
+  // Reset all filters to defaults
+  const handleResetFilters = () => {
+    setSortBy('trendingScore')
+    setDateFilter('allTime')
+    setSearchTerm('')
+    setSelectedSuggestion(null)
+    setShowSuggestions(false)
+  }
+
   useEffect(() => {
     onFilteredVideos(filterAndSortVideos)
   }, [filterAndSortVideos])
 
   return (
-    <div className="glass rounded-xl p-6 space-y-4">
-      <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
+    <div className="bg-[#111118] border border-[#2a2a3e] rounded-xl p-6">
+      <div className="flex flex-col lg:flex-row gap-6 items-start lg:items-center justify-between">
         {/* Controls */}
-        <div className="flex flex-col sm:flex-row gap-4 flex-1">
+        <div className="flex flex-col lg:flex-row gap-6 flex-1 w-full">
           {/* Sort Dropdown */}
           <div className="flex flex-col space-y-2">
-            <label className="text-sm font-medium text-muted-foreground">Sort by</label>
+            <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Sort by</label>
             <Select value={sortBy} onValueChange={(value) => setSortBy(value as SortOption)}>
-              <SelectTrigger className="w-full sm:w-48 bg-background border-border">
-                <SelectValue />
+              <SelectTrigger className="w-[200px] bg-[#111118] border-[#2a2a3e] text-white hover:border-[#3a3a4e] transition-colors">
+                <SelectValue placeholder="Select sort" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-[#111118] border-[#2a2a3e]">
                 {sortOptions.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
+                  <SelectItem 
+                    key={option.value} 
+                    value={option.value}
+                    className="text-white hover:bg-[#2a2a3e] focus:bg-[#2a2a3e]"
+                  >
                     {option.label}
                   </SelectItem>
                 ))}
@@ -189,14 +218,18 @@ export default function FilterBar({ videos, onFilteredVideos }: FilterBarProps) 
 
           {/* Date Filter */}
           <div className="flex flex-col space-y-2">
-            <label className="text-sm font-medium text-muted-foreground">Date range</label>
+            <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Date range</label>
             <Select value={dateFilter} onValueChange={(value) => setDateFilter(value as DateFilter)}>
-              <SelectTrigger className="w-full sm:w-40 bg-background border-border">
-                <SelectValue />
+              <SelectTrigger className="w-[160px] bg-[#111118] border-[#2a2a3e] text-white hover:border-[#3a3a4e] transition-colors">
+                <SelectValue placeholder="Select date" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-[#111118] border-[#2a2a3e]">
                 {dateFilterOptions.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
+                  <SelectItem 
+                    key={option.value} 
+                    value={option.value}
+                    className="text-white hover:bg-[#2a2a3e] focus:bg-[#2a2a3e]"
+                  >
                     {option.label}
                   </SelectItem>
                 ))}
@@ -206,7 +239,7 @@ export default function FilterBar({ videos, onFilteredVideos }: FilterBarProps) 
 
           {/* Search Input */}
           <div className="flex flex-col space-y-2 flex-1">
-            <label className="text-sm font-medium text-muted-foreground">Search videos</label>
+            <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Search videos</label>
             <div className="relative" ref={searchInputRef}>
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground z-10" />
               <Input
@@ -214,8 +247,8 @@ export default function FilterBar({ videos, onFilteredVideos }: FilterBarProps) 
                 placeholder="Search by title..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 bg-background border-border"
-                onFocus={() => setShowSuggestions(searchTerm.length >= 2)}
+                className="pl-10 bg-[#111118] border-[#2a2a3e] text-white placeholder:text-muted-foreground hover:border-[#3a3a4e] transition-colors"
+                onFocus={() => setShowSuggestions(searchTerm.length >= 1)}
               />
               
               {/* Autocomplete Dropdown */}
@@ -239,6 +272,9 @@ export default function FilterBar({ videos, onFilteredVideos }: FilterBarProps) 
                         <div className="text-sm text-white truncate">
                           {highlightMatch(suggestion.title, searchTerm)}
                         </div>
+                        <div className="text-xs text-muted-foreground">
+                          {suggestion.publishedYear}
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -248,10 +284,26 @@ export default function FilterBar({ videos, onFilteredVideos }: FilterBarProps) 
           </div>
         </div>
 
-        {/* Video Count Badge */}
-        <div className="flex items-center gap-2 text-sm text-muted-foreground bg-muted/50 px-3 py-2 rounded-lg">
-          <Filter className="h-4 w-4" />
-          <span>Showing {filterAndSortVideos.length} of {videos.length} videos</span>
+        {/* Action Buttons */}
+        <div className="flex items-center gap-3">
+          {/* Reset Filters Button */}
+          {hasActiveFilters && (
+            <button
+              onClick={handleResetFilters}
+              className="flex items-center gap-2 px-4 py-2 bg-[#2a2a3e] hover:bg-[#3a3a4e] text-white rounded-lg transition-colors text-sm"
+            >
+              <RotateCcw className="h-4 w-4" />
+              Reset filters
+            </button>
+          )}
+
+          {/* Video Count Badge */}
+          <div className="flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full">
+            <Filter className="h-4 w-4 text-primary" />
+            <span className="text-sm text-primary font-medium">
+              {filterAndSortVideos.length} of {videos.length}
+            </span>
+          </div>
         </div>
       </div>
     </div>
