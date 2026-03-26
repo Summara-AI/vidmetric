@@ -191,120 +191,118 @@ export default function FilterBar({ videos, onFilteredVideos }: FilterBarProps) 
   }, [filterAndSortVideos])
 
   return (
-    <div className="bg-[#111118] border border-[#2a2a3e] rounded-xl p-4 sm:p-6">
-      <div className="flex flex-col gap-4 sm:gap-6">
-        {/* Controls */}
-        <div className="flex flex-col gap-4 sm:gap-6 w-full">
-          {/* Sort Dropdown */}
-          <div className="flex flex-col space-y-2">
-            <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Sort by</label>
-            <Select value={sortBy} onValueChange={(value) => setSortBy(value as SortOption)}>
-              <SelectTrigger className="w-full sm:w-[200px] bg-[#111118] border-[#2a2a3e] text-white hover:border-[#3a3a4e] transition-colors">
-                <SelectValue placeholder="Select sort" />
-              </SelectTrigger>
-              <SelectContent className="bg-[#111118] border-[#2a2a3e]">
-                {sortOptions.map((option) => (
-                  <SelectItem 
-                    key={option.value} 
-                    value={option.value}
-                    className="text-white hover:bg-[#2a2a3e] focus:bg-[#2a2a3e]"
-                  >
-                    {option.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          {/* Date Filter */}
-          <div className="flex flex-col space-y-2">
-            <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Date range</label>
-            <Select value={dateFilter} onValueChange={(value) => setDateFilter(value as DateFilter)}>
-              <SelectTrigger className="w-full sm:w-[160px] bg-[#111118] border-[#2a2a3e] text-white hover:border-[#3a3a4e] transition-colors">
-                <SelectValue placeholder="Select date" />
-              </SelectTrigger>
-              <SelectContent className="bg-[#111118] border-[#2a2a3e]">
-                {dateFilterOptions.map((option) => (
-                  <SelectItem 
-                    key={option.value} 
-                    value={option.value}
-                    className="text-white hover:bg-[#2a2a3e] focus:bg-[#2a2a3e]"
-                  >
-                    {option.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          {/* Search Input */}
-          <div className="flex flex-col space-y-2 flex-1">
-            <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Search videos</label>
-            <div className="relative" ref={searchInputRef}>
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground z-10" />
-              <Input
-                type="text"
-                placeholder="Search by title..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 bg-[#111118] border-[#2a2a3e] text-white placeholder:text-muted-foreground hover:border-[#3a3a4e] transition-colors"
-                onFocus={() => setShowSuggestions(searchTerm.length >= 1)}
-              />
-              
-              {/* Autocomplete Dropdown */}
-              {showSuggestions && suggestions.length > 0 && (
-                <div 
-                  ref={suggestionsRef}
-                  className="absolute top-full left-0 right-0 mt-1 bg-[#1a1a2e] border border-[#2a2a3e] rounded-lg shadow-lg z-50 animate-in fade-in-0 slide-in-from-top-2"
+    <div className="flex flex-col gap-3 p-4 md:p-5 bg-[#111118] border border-[#2a2a3e] rounded-xl">
+      {/* Controls */}
+      <div className="flex flex-col gap-3 md:flex-row md:items-end md:flex-wrap">
+        {/* Sort Dropdown */}
+        <div className="w-full md:w-48">
+          <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider block mb-2">Sort by</label>
+          <Select value={sortBy} onValueChange={(value) => setSortBy(value as SortOption)}>
+            <SelectTrigger className="w-full h-10 bg-[#111118] border-[#2a2a3e] text-white hover:border-[#3a3a4e] transition-colors">
+              <SelectValue placeholder="Select sort" />
+            </SelectTrigger>
+            <SelectContent className="bg-[#111118] border-[#2a2a3e]">
+              {sortOptions.map((option) => (
+                <SelectItem 
+                  key={option.value} 
+                  value={option.value}
+                  className="text-white hover:bg-[#2a2a3e] focus:bg-[#2a2a3e]"
                 >
-                  {suggestions.map((suggestion) => (
-                    <div
-                      key={suggestion.id}
-                      onClick={() => handleSuggestionClick(suggestion.title)}
-                      className="flex items-center gap-3 p-3 hover:bg-[#2a2a3e] cursor-pointer transition-colors"
-                    >
-                      <img 
-                        src={suggestion.thumbnail} 
-                        alt={suggestion.title}
-                        className="w-10 h-10 rounded object-cover flex-shrink-0"
-                      />
-                      <div className="flex-1 min-w-0">
-                        <div className="text-sm text-white truncate">
-                          {highlightMatch(suggestion.title, searchTerm)}
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          {suggestion.publishedYear}
-                        </div>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* Date Filter */}
+        <div className="w-full md:w-48">
+          <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider block mb-2">Date range</label>
+          <Select value={dateFilter} onValueChange={(value) => setDateFilter(value as DateFilter)}>
+            <SelectTrigger className="w-full h-10 bg-[#111118] border-[#2a2a3e] text-white hover:border-[#3a3a4e] transition-colors">
+              <SelectValue placeholder="Select date" />
+            </SelectTrigger>
+            <SelectContent className="bg-[#111118] border-[#2a2a3e]">
+              {dateFilterOptions.map((option) => (
+                <SelectItem 
+                  key={option.value} 
+                  value={option.value}
+                  className="text-white hover:bg-[#2a2a3e] focus:bg-[#2a2a3e]"
+                >
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* Search Input */}
+        <div className="w-full md:flex-1">
+          <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider block mb-2">Search videos</label>
+          <div className="relative" ref={searchInputRef}>
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground z-10" />
+            <Input
+              type="text"
+              placeholder="Search by title..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10 h-10 bg-[#111118] border-[#2a2a3e] text-white placeholder:text-muted-foreground hover:border-[#3a3a4e] transition-colors"
+              onFocus={() => setShowSuggestions(searchTerm.length >= 1)}
+            />
+            
+            {/* Autocomplete Dropdown */}
+            {showSuggestions && suggestions.length > 0 && (
+              <div 
+                ref={suggestionsRef}
+                className="absolute top-full left-0 right-0 mt-1 bg-[#1a1a2e] border border-[#2a2a3e] rounded-lg shadow-lg z-50 animate-in fade-in-0 slide-in-from-top-2"
+              >
+                {suggestions.map((suggestion) => (
+                  <div
+                    key={suggestion.id}
+                    onClick={() => handleSuggestionClick(suggestion.title)}
+                    className="flex items-center gap-3 p-3 hover:bg-[#2a2a3e] cursor-pointer transition-colors"
+                  >
+                    <img 
+                      src={suggestion.thumbnail} 
+                      alt={suggestion.title}
+                      className="w-10 h-10 rounded object-cover flex-shrink-0"
+                    />
+                    <div className="flex-1 min-w-0">
+                      <div className="text-sm text-white truncate">
+                        {highlightMatch(suggestion.title, searchTerm)}
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        {suggestion.publishedYear}
                       </div>
                     </div>
-                  ))}
-                </div>
-              )}
-            </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
+      </div>
 
-        {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row items-center gap-3">
-          {/* Reset Filters Button */}
-          {hasActiveFilters && (
-            <button
-              onClick={handleResetFilters}
-              className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 bg-[#2a2a3e] hover:bg-[#3a3a4e] text-white rounded-lg transition-colors text-sm min-h-[44px]"
-            >
-              <RotateCcw className="h-4 w-4" />
-              Reset filters
-            </button>
-          )}
-
-          {/* Video Count Badge */}
-          <div className="flex items-center justify-center gap-2 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full w-full sm:w-auto">
-            <Filter className="h-4 w-4 text-primary" />
-            <span className="text-sm text-primary font-medium">
-              {filterAndSortVideos.length} of {videos.length}
-            </span>
-          </div>
+      {/* Bottom Row - Count and Reset */}
+      <div className="flex flex-row justify-between items-center flex-wrap gap-2">
+        {/* Video Count Badge */}
+        <div className="flex items-center gap-2 px-3 py-1 bg-primary/10 border border-primary/20 rounded-full">
+          <Filter className="h-4 w-4 text-primary" />
+          <span className="text-sm text-primary font-medium">
+            {filterAndSortVideos.length} of {videos.length}
+          </span>
         </div>
+
+        {/* Reset Filters Button */}
+        {hasActiveFilters && (
+          <button
+            onClick={handleResetFilters}
+            className="flex items-center justify-center gap-2 px-3 py-1 bg-[#2a2a3e] hover:bg-[#3a3a4e] text-white rounded-lg transition-colors text-sm min-h-[36px]"
+          >
+            <RotateCcw className="h-3 w-3" />
+            Reset
+          </button>
+        )}
       </div>
     </div>
   )

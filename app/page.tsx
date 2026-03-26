@@ -95,27 +95,30 @@ export default function Home() {
 
       case 'success':
         return (
-          <div className="max-w-7xl mx-auto px-3 sm:px-4 py-6 sm:py-8 space-y-6 sm:space-y-8">
-            <ChannelHeader
-              channel={channelInfo!}
-              onSearchAnother={handleSearchAnother}
-              fetchedAt={fetchedAt}
-            />
-            
-            <div className="flex flex-col gap-4 sm:gap-6">
-              <FilterBar
-                videos={videos}
-                onFilteredVideos={handleFilteredVideos}
-              />
-              <ExportButton
-                filteredVideos={filteredVideos}
-                channelName={channelInfo!.title}
-              />
+          <div className="min-h-screen bg-[#0A0A0F]">
+            <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 md:py-8">
+              <div className="flex flex-col gap-4 md:gap-6">
+                <ChannelHeader
+                  channel={channelInfo!}
+                  onSearchAnother={handleSearchAnother}
+                  fetchedAt={fetchedAt}
+                />
+                
+                <FilterBar
+                  videos={videos}
+                  onFilteredVideos={handleFilteredVideos}
+                />
+                
+                <ExportButton
+                  filteredVideos={filteredVideos}
+                  channelName={channelInfo!.title}
+                />
+                
+                <MetricsChart videos={filteredVideos} />
+                
+                <VideoList filteredVideos={filteredVideos} />
+              </div>
             </div>
-            
-            <MetricsChart videos={filteredVideos} />
-            
-            <VideoList filteredVideos={filteredVideos} />
           </div>
         )
 
