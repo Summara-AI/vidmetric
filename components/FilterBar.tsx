@@ -101,7 +101,7 @@ export default function FilterBar({ videos, onFilteredVideos }: FilterBarProps) 
 
   useEffect(() => {
     onFilteredVideos(filterAndSortVideos)
-  }, [filterAndSortVideos, onFilteredVideos])
+  }, [filterAndSortVideos])
 
   return (
     <div className="glass rounded-xl p-6 space-y-4">

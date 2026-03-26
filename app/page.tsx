@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import ChannelInput from '@/components/ChannelInput'
 import ChannelHeader from '@/components/ChannelHeader'
 import FilterBar from '@/components/FilterBar'
@@ -19,6 +19,10 @@ export default function Home() {
   const [filteredVideos, setFilteredVideos] = useState<VideoMetrics[]>([])
   const [error, setError] = useState<string | null>(null)
   const [fetchedAt, setFetchedAt] = useState<string>('')
+
+  const handleFilteredVideos = useCallback((filtered: VideoMetrics[]) => {
+    setFilteredVideos(filtered)
+  }, [])
 
   const handleAnalyze = async (url: string) => {
     setState('loading')
@@ -102,7 +106,7 @@ export default function Home() {
               <div className="flex-1">
                 <FilterBar
                   videos={videos}
-                  onFilteredVideos={setFilteredVideos}
+                  onFilteredVideos={handleFilteredVideos}
                 />
               </div>
               <ExportButton
