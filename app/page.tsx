@@ -95,20 +95,18 @@ export default function Home() {
 
       case 'success':
         return (
-          <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
+          <div className="max-w-7xl mx-auto px-3 sm:px-4 py-6 sm:py-8 space-y-6 sm:space-y-8">
             <ChannelHeader
               channel={channelInfo!}
               onSearchAnother={handleSearchAnother}
               fetchedAt={fetchedAt}
             />
             
-            <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
-              <div className="flex-1">
-                <FilterBar
-                  videos={videos}
-                  onFilteredVideos={handleFilteredVideos}
-                />
-              </div>
+            <div className="flex flex-col gap-4 sm:gap-6">
+              <FilterBar
+                videos={videos}
+                onFilteredVideos={handleFilteredVideos}
+              />
               <ExportButton
                 filteredVideos={filteredVideos}
                 channelName={channelInfo!.title}

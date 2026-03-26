@@ -81,22 +81,25 @@ export default function ExportButton({ filteredVideos, channelName }: ExportButt
     <Button
       onClick={exportToCSV}
       disabled={isExporting || filteredVideos.length === 0}
-      className="flex items-center gap-2 bg-primary hover:bg-primary/90 text-white"
+      className="w-full sm:w-auto flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white min-h-[44px]"
     >
       {exported ? (
         <>
           <CheckCircle className="h-4 w-4" />
-          Exported!
+          <span className="hidden sm:inline">Exported!</span>
+          <span className="sm:hidden">Exported</span>
         </>
       ) : isExporting ? (
         <>
           <div className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-          Exporting...
+          <span className="hidden sm:inline">Exporting...</span>
+          <span className="sm:hidden">Exporting</span>
         </>
       ) : (
         <>
           <Download className="h-4 w-4" />
-          Export CSV
+          <span className="hidden sm:inline">Export CSV</span>
+          <span className="sm:hidden">Export</span>
         </>
       )}
     </Button>

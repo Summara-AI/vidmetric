@@ -17,19 +17,19 @@ export default function VideoCard({ video, index }: VideoCardProps) {
   return (
     <div
       onClick={handleClick}
-      className="glass rounded-xl p-4 cursor-pointer transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10 fade-in-up"
+      className="glass rounded-xl p-3 sm:p-4 cursor-pointer transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10 fade-in-up"
       style={{
         animationDelay: `${index * 100}ms`,
         animationFillMode: 'both'
       }}
     >
-      <div className="flex flex-col md:flex-row gap-4">
+      <div className="flex flex-col gap-3 sm:gap-4">
         {/* Video Thumbnail */}
-        <div className="relative flex-shrink-0 group">
+        <div className="relative group">
           <img
             src={video.thumbnail}
             alt={video.title}
-            className="w-full md:w-48 h-28 object-cover rounded-lg"
+            className="w-full aspect-video object-cover rounded-lg"
           />
           {/* Duration Badge */}
           <div className="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded-md backdrop-blur-sm">
@@ -46,14 +46,14 @@ export default function VideoCard({ video, index }: VideoCardProps) {
         </div>
 
         {/* Video Info */}
-        <div className="flex-1 space-y-3">
+        <div className="flex-1 space-y-2 sm:space-y-3">
           {/* Title */}
-          <h3 className="font-semibold text-white leading-tight line-clamp-2 hover:text-primary transition-colors">
+          <h3 className="font-semibold text-white leading-tight line-clamp-2 hover:text-primary transition-colors text-sm sm:text-base">
             {video.title}
           </h3>
 
           {/* Published Date */}
-          <div className="text-sm text-muted-foreground">
+          <div className="text-xs sm:text-sm text-muted-foreground">
             {formatDate(video.publishedAt)} • {daysAgo(video.publishedAt)} days ago
           </div>
 
@@ -63,7 +63,7 @@ export default function VideoCard({ video, index }: VideoCardProps) {
           </div>
 
           {/* Metrics */}
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-1 sm:gap-2">
             {/* Views */}
             <div className="inline-flex items-center px-2 py-1 bg-muted/50 rounded-md text-xs text-muted-foreground">
               <span className="mr-1">👁</span>

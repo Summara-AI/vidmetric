@@ -191,15 +191,15 @@ export default function FilterBar({ videos, onFilteredVideos }: FilterBarProps) 
   }, [filterAndSortVideos])
 
   return (
-    <div className="bg-[#111118] border border-[#2a2a3e] rounded-xl p-6">
-      <div className="flex flex-col lg:flex-row gap-6 items-start lg:items-center justify-between">
+    <div className="bg-[#111118] border border-[#2a2a3e] rounded-xl p-4 sm:p-6">
+      <div className="flex flex-col gap-4 sm:gap-6">
         {/* Controls */}
-        <div className="flex flex-col lg:flex-row gap-6 flex-1 w-full">
+        <div className="flex flex-col gap-4 sm:gap-6 w-full">
           {/* Sort Dropdown */}
           <div className="flex flex-col space-y-2">
             <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Sort by</label>
             <Select value={sortBy} onValueChange={(value) => setSortBy(value as SortOption)}>
-              <SelectTrigger className="w-[200px] bg-[#111118] border-[#2a2a3e] text-white hover:border-[#3a3a4e] transition-colors">
+              <SelectTrigger className="w-full sm:w-[200px] bg-[#111118] border-[#2a2a3e] text-white hover:border-[#3a3a4e] transition-colors">
                 <SelectValue placeholder="Select sort" />
               </SelectTrigger>
               <SelectContent className="bg-[#111118] border-[#2a2a3e]">
@@ -220,7 +220,7 @@ export default function FilterBar({ videos, onFilteredVideos }: FilterBarProps) 
           <div className="flex flex-col space-y-2">
             <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Date range</label>
             <Select value={dateFilter} onValueChange={(value) => setDateFilter(value as DateFilter)}>
-              <SelectTrigger className="w-[160px] bg-[#111118] border-[#2a2a3e] text-white hover:border-[#3a3a4e] transition-colors">
+              <SelectTrigger className="w-full sm:w-[160px] bg-[#111118] border-[#2a2a3e] text-white hover:border-[#3a3a4e] transition-colors">
                 <SelectValue placeholder="Select date" />
               </SelectTrigger>
               <SelectContent className="bg-[#111118] border-[#2a2a3e]">
@@ -285,12 +285,12 @@ export default function FilterBar({ videos, onFilteredVideos }: FilterBarProps) 
         </div>
 
         {/* Action Buttons */}
-        <div className="flex items-center gap-3">
+        <div className="flex flex-col sm:flex-row items-center gap-3">
           {/* Reset Filters Button */}
           {hasActiveFilters && (
             <button
               onClick={handleResetFilters}
-              className="flex items-center gap-2 px-4 py-2 bg-[#2a2a3e] hover:bg-[#3a3a4e] text-white rounded-lg transition-colors text-sm"
+              className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 bg-[#2a2a3e] hover:bg-[#3a3a4e] text-white rounded-lg transition-colors text-sm min-h-[44px]"
             >
               <RotateCcw className="h-4 w-4" />
               Reset filters
@@ -298,7 +298,7 @@ export default function FilterBar({ videos, onFilteredVideos }: FilterBarProps) 
           )}
 
           {/* Video Count Badge */}
-          <div className="flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full">
+          <div className="flex items-center justify-center gap-2 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full w-full sm:w-auto">
             <Filter className="h-4 w-4 text-primary" />
             <span className="text-sm text-primary font-medium">
               {filterAndSortVideos.length} of {videos.length}

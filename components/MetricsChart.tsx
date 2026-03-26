@@ -96,26 +96,26 @@ export default function MetricsChart({ videos }: MetricsChartProps) {
   }
 
   return (
-    <div className="glass rounded-xl p-6 space-y-6" style={{ minHeight: '500px' }}>
+    <div className="glass rounded-xl p-4 sm:p-6 space-y-4 sm:space-y-6" style={{ minHeight: '400px' }}>
       <div className="flex items-center gap-2">
-        <TrendingUp className="h-6 w-6 text-primary" />
-        <h2 className="text-2xl font-bold text-white">Performance Analytics</h2>
+        <TrendingUp className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+        <h2 className="text-xl sm:text-2xl font-bold text-white">Performance Analytics</h2>
       </div>
 
       <Tabs defaultValue="views" className="w-full">
         <TabsList className="grid w-full grid-cols-2 bg-muted/50 border border-border/50">
-          <TabsTrigger value="views" className="data-[state=active]:bg-primary data-[state=active]:text-white">
+          <TabsTrigger value="views" className="data-[state=active]:bg-primary data-[state=active]:text-white text-sm">
             Views Overview
           </TabsTrigger>
-          <TabsTrigger value="engagement" className="data-[state=active]:bg-primary data-[state=active]:text-white">
+          <TabsTrigger value="engagement" className="data-[state=active]:bg-primary data-[state=active]:text-white text-sm">
             Engagement Rate
           </TabsTrigger>
         </TabsList>
 
         <TabsContent value="views" className="space-y-4">
-          <div style={{ minHeight: '400px' }} className="overflow-x-auto">
+          <div style={{ minHeight: '300px', height: '250px' }} className="overflow-x-auto">
             <div className="min-w-[600px] h-full">
-              <ResponsiveContainer width="100%" height={350}>
+              <ResponsiveContainer width="100%" height={250}>
                 <BarChart 
                   data={viewsData} 
                   margin={{ top: 20, right: 30, left: 20, bottom: 60 }}
@@ -128,6 +128,7 @@ export default function MetricsChart({ videos }: MetricsChartProps) {
                     angle={-45}
                     textAnchor="end"
                     height={80}
+                    hide={true}
                   />
                   <YAxis 
                     stroke="#94A3B8"
@@ -148,9 +149,9 @@ export default function MetricsChart({ videos }: MetricsChartProps) {
         </TabsContent>
 
         <TabsContent value="engagement" className="space-y-4">
-          <div style={{ minHeight: '400px' }} className="overflow-x-auto">
+          <div style={{ minHeight: '300px', height: '250px' }} className="overflow-x-auto">
             <div className="min-w-[600px] h-full">
-              <ResponsiveContainer width="100%" height={350}>
+              <ResponsiveContainer width="100%" height={250}>
                 <BarChart 
                   data={engagementData} 
                   margin={{ top: 20, right: 30, left: 20, bottom: 60 }}
@@ -163,6 +164,7 @@ export default function MetricsChart({ videos }: MetricsChartProps) {
                     angle={-45}
                     textAnchor="end"
                     height={80}
+                    hide={true}
                   />
                   <YAxis 
                     stroke="#94A3B8"

@@ -25,13 +25,13 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <nav className="border-b border-border/50 glass">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center h-16">
+          <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
+            <div className="flex justify-between items-center h-14 sm:h-16">
               <div className="flex items-center space-x-2">
-                <Zap className="h-6 w-6 text-primary" />
-                <span className="text-xl font-bold text-white">VidMetric</span>
+                <Zap className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+                <span className="text-lg sm:text-xl font-bold text-white">VidMetric</span>
               </div>
-              <div className="text-sm text-muted-foreground">
+              <div className="hidden sm:block text-sm text-muted-foreground">
                 Powered by YouTube API
               </div>
             </div>
