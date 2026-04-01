@@ -1,6 +1,6 @@
 # VidMetric
 
-![VidMetric Screenshot](https://via.placeholder.com/1200x600/0A0A0F/3B82F6?text=VidMetric+-+YouTube+Channel+Analytics)
+
 
 A premium YouTube competitor analysis SaaS tool that helps you analyze any YouTube channel's performance, discover trending videos, and gain competitive insights.
 
@@ -148,10 +148,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Support
 
-If you have any questions or run into issues, please:
-- Check the [Issues](https://github.com/yourusername/vidmetric/issues) page
-- Create a new issue with detailed information
-- Join our Discord community (link coming soon)
+
 
 ---
 
